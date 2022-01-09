@@ -1,0 +1,10 @@
+# local .terraform ignore
+.terraform/*
+
+# tf state files
+*.tfstate
+*.tfstate.*
+
+
+# tf variable terraform.tfvars
+*.tfvars
