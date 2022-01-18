@@ -1,11 +1,11 @@
-resource "aws_default_security_group" "default-sg" {
+resource "aws_security_group" "dev-sg" {
     vpc_id = var.vpc_id
 
     ingress {
         from_port = 22
         to_port = 22
         protocol = "tcp"
-        cidr_blocks = [var.my_ip]
+        cidr_blocks = ["0.0.0.0/0"]
     }
 
     ingress {
@@ -24,7 +24,7 @@ resource "aws_default_security_group" "default-sg" {
     }
 
     tags = {
-        Name = "${var.env_prefix}-default-sg"
+        Name = "${var.env_prefix}-dev-sg"
     }
 }
 
@@ -42,7 +42,7 @@ data "aws_ami" "latest-amazon-linux-image" {
 }
 
 resource "aws_key_pair" "ssh-key" {
-    key_name = "server-key"
+    key_name = var.key_name
     public_key = file(var.public_key_location)
 }
 
@@ -51,7 +51,7 @@ resource "aws_instance" "myapp-server" {
     instance_type = var.instance_type
 
     subnet_id = var.subnet_id
-    vpc_security_group_ids = [aws_default_security_group.default-sg.id]
+    vpc_security_group_ids = [aws_security_group.dev-sg.id]
     availability_zone = var.avail_zone
 
     associate_public_ip_address = true

@@ -1,5 +1,5 @@
 provider "aws" {
-    region = "eu-west-3"
+    region = var.region
 }
 
 resource "aws_vpc" "myapp-vpc" {
@@ -15,7 +15,6 @@ module "myapp-subnet" {
     avail_zone = var.avail_zone
     env_prefix = var.env_prefix
     vpc_id = aws_vpc.myapp-vpc.id
-    default_route_table_id = aws_vpc.myapp-vpc.default_route_table_id
 }
 
 module "myapp-server" {
@@ -28,4 +27,5 @@ module "myapp-server" {
     instance_type = var.instance_type
     subnet_id = module.myapp-subnet.subnet.id
     avail_zone = var.avail_zone
+    key_name= var.key_name
 }

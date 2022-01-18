@@ -13,9 +13,8 @@ resource "aws_internet_gateway" "myapp-igw" {
         Name = "${var.env_prefix}-igw"
     }
 }
-
-resource "aws_default_route_table" "main-rtb" {
-    default_route_table_id = var.default_route_table_id
+resource "aws_route_table" "main-rtb" {
+    vpc_id = var.vpc_id
 
     route {
         cidr_block = "0.0.0.0/0"
